@@ -1,0 +1,78 @@
+[
+  {
+    "model": "catalog.category",
+    "pk": 75,
+    "fields": {
+      "category_name": "Бытовая техника",
+      "category_text": ""
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 76,
+    "fields": {
+      "category_name": "Садовые принадлежности",
+      "category_text": ""
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 77,
+    "fields": {
+      "category_name": "Компьютерные комплектующие",
+      "category_text": ""
+    }
+  },
+  {
+    "model": "catalog.products",
+    "pk": 10,
+    "fields": {
+      "product_name": "Пылесос",
+      "product_category": 75,
+      "product_text": null,
+      "product_image": "",
+      "product_price": 10000,
+      "product_date_create": "2023-05-25T15:21:02.606Z",
+      "product_date_edit": "2023-05-25T15:21:02.606Z"
+    }
+  },
+  {
+    "model": "catalog.products",
+    "pk": 11,
+    "fields": {
+      "product_name": "RTX 5090",
+      "product_category": 77,
+      "product_text": null,
+      "product_image": "",
+      "product_price": 500000,
+      "product_date_create": "2023-05-25T15:21:02.606Z",
+      "product_date_edit": "2023-05-25T15:21:02.606Z"
+    }
+  },
+  {
+    "model": "catalog.products",
+    "pk": 12,
+    "fields": {
+      "product_name": "Шланг садовый",
+      "product_category": 76,
+      "product_text": null,
+      "product_image": "",
+      "product_price": 1500,
+      "product_date_create": "2023-05-25T15:21:02.606Z",
+      "product_date_edit": "2023-05-25T15:21:02.606Z"
+    }
+  },
+  {
+    "model": "catalog.products",
+    "pk": 13,
+    "fields": {
+      "product_name": "Intel i9",
+      "product_category": 77,
+      "product_text": null,
+      "product_image": "",
+      "product_price": 90000,
+      "product_date_create": "2023-05-25T15:21:02.606Z",
+      "product_date_edit": "2023-05-25T15:21:02.606Z"
+    }
+  }
+]
