@@ -14,12 +14,6 @@ class Command(BaseCommand):
             {'category_name': 'Садовые принадлежности', 'category_text': ''},
             {'category_name': 'Компьютерные комплектующие', 'category_text': ''}
         ]
-        product_list = [
-            {'product_name': 'Пылесос', 'product_category': '', 'product_price': '10000'},
-            {'product_name': 'RTX 5090', 'product_category': '', 'product_price': '500000'},
-            {'product_name': 'Шланг садовый', 'product_category': '', 'product_price': '1500'},
-            {'product_name': 'Intel i9', 'product_category': '', 'product_price': '90000'}
-        ]
 
         category_objects = []
         product_objects = []
@@ -27,6 +21,19 @@ class Command(BaseCommand):
         for item in category_list:
             category_objects.append(Category(**item))
         Category.objects.bulk_create(category_objects)
+
+        category_map = {category.category_name: category for category in Category.objects.all()}
+
+        product_list = [
+            {'product_name': 'Пылесос', 'product_category': category_map['Бытовая техника'],
+             'product_price': '10000'},
+            {'product_name': 'RTX 5090', 'product_category': category_map['Компьютерные комплектующие'],
+             'product_price': '500000'},
+            {'product_name': 'Шланг садовый', 'product_category': category_map['Садовые принадлежности'],
+             'product_price': '1500'},
+            {'product_name': 'Intel i9', 'product_category': category_map['Компьютерные комплектующие'],
+             'product_price': '90000'}
+        ]
 
         for item in product_list:
             product_objects.append(Products(**item))
