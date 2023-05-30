@@ -1,9 +1,15 @@
 from django.shortcuts import render
+from catalog.models import Category, Products
+from config.settings import MEDIA_ROOT
 
 
-def catalog(request):
-    return render(request, 'catalog/catalog.html')
+def contacts(request):
+    return render(request, 'catalog/contacts.html')
 
 
 def home(request):
-    return render(request, 'home/home.html')
+    products_list = Products.objects.all()
+    context = {
+        'object_list': products_list
+    }
+    return render(request, 'catalog/home.html', context)
