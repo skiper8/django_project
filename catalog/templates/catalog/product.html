@@ -1,0 +1,14 @@
+{% extends 'catalog/base.html'%}
+{% load mediapath %}
+{% block content %}
+
+<div class="card">
+    <p>{{ object.product_date_create }}</p>
+    <img src="{{ object.product_image|mediapath }}" alt="Джинсы из денима" style="width:100%">
+    <h1>{{ object }}</h1>
+    <p class="price">₽ {{ object.product_price }}</p>
+    <p>{{ object.product_text }}</p>
+    <a href="" class="button">В корзину</a>
+</div>
+
+{% endblock %}
