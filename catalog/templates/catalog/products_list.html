@@ -2,7 +2,7 @@
 {% load mediapath %}
 {% block content %}
 {% include 'catalog/includes/inc.catalog.title.html' %}
-{% for object in object_list %}
+{% for object in products_list %}
 <div class="col-md-4">
     <div class="card mb-4 box-shadow">
         <img src="{{ object.product_image|mediapath }}"
@@ -20,7 +20,7 @@
         </div>
         <body>
         <nav class="ms-5">
-            <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:product' object.pk %}">О товаре</a>
+            <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:products_detail' object.pk %}">О товаре</a>
         </nav>
         </p>
         </body>

@@ -1,0 +1,14 @@
+{% extends 'catalog/base.html' %}
+{% load mediapath %}
+{% block content %}
+
+    <div class="card">
+        <p>{{ object.date_create }}</p>
+        <img src="{{ object.image|mediapath }}" alt="" style="">
+        <h1>{{ object }}</h1>
+        <p class="price">{{ object.slug }}</p>
+        <p>{{ object.text }}</p>
+    </div>
+    <h5 style="color:#FF0000">{{ object.view_count }}</h5>
+    </div
+{% endblock %}

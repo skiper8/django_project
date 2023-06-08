@@ -1,0 +1,29 @@
+{% extends 'catalog/base.html' %}
+{% load mediapath %}
+{% block content %}
+    <body>
+
+    <main role="main">
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <h1 class="display-4">SkyStore-Форум</h1>
+    </div>
+    <div class="container marketing">
+    <div class="row">
+    {% for object in blog_list %}
+        <div class="col-lg-4">
+            <img class="rounded-circle"
+                 src="{{ object.image|mediapath }}"
+                 alt="Generic placeholder image" width="140" height="140">
+            <h2>{{ object }}</h2>
+            <p>{{ object.slug }}</p>
+            <a class="btn btn-success" href="{% url 'catalog:blog_detail' object.pk %}" role="button">Читать статью
+                &raquo;</a> <br>
+            <a class="btn btn-warning" href="{% url 'catalog:blog_update' object.pk %}" role="button">Изменить
+                &raquo;</a> <br>
+            <a class="btn btn-danger" href="{% url 'catalog:blog_delete' object.pk %}" role="button">Удалить
+                &raquo;</a> <br>
+        </div><!-- /.col-lg-4 -->
+    {% endfor %}
+    <p><a class="btn btn-secondary" href="{% url 'catalog:blog_form' %}" role="button">Создать статью
+        &raquo;</a></p>
+{% endblock %}
