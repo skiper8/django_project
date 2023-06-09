@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.text import slugify
 
 NULLABLE = {'blank': True, 'null': True}
 
@@ -51,9 +52,8 @@ class Blog(models.Model):
     is_active = models.BooleanField(default=True, verbose_name='публикация')
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = self.title
-        super().save(*args, **kwargs)
+        self.slug = slugify(self.title)
+        super(Blog, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.title
