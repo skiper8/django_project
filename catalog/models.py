@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from django.utils.text import slugify
 
@@ -44,7 +46,7 @@ class Contacts(models.Model):
 
 class Blog(models.Model):
     title = models.CharField(max_length=150, verbose_name='заголовок')
-    slug = models.CharField(max_length=150, verbose_name='slug', unique=True, blank=True)
+    slug = models.CharField(max_length=150, verbose_name='slug', unique=True)
     text = models.TextField(verbose_name='содержимое', **NULLABLE)
     image = models.ImageField(upload_to='blog_image/', verbose_name='изображение', **NULLABLE)
     date_create = models.DateField(verbose_name='дата создания', auto_now_add=True, **NULLABLE)
@@ -52,7 +54,10 @@ class Blog(models.Model):
     is_active = models.BooleanField(default=True, verbose_name='публикация')
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)
+        if not self.slug:
+            self.slug = slugify(self.title)
+            while Blog.objects.filter(slug=self.slug).exists():
+                self.slug = f"{self.slug}-{uuid.uuid4().hex[:6]}"
         super(Blog, self).save(*args, **kwargs)
 
     def __str__(self):
