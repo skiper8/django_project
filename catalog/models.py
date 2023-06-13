@@ -1,7 +1,9 @@
 import uuid
 
 from django.db import models
+from django.template.defaultfilters import slugify
 from django.utils.text import slugify
+
 
 NULLABLE = {'blank': True, 'null': True}
 
@@ -46,7 +48,7 @@ class Contacts(models.Model):
 
 class Blog(models.Model):
     title = models.CharField(max_length=150, verbose_name='заголовок')
-    slug = models.CharField(max_length=150, verbose_name='slug', unique=True)
+    slug = models.CharField(verbose_name='slug', max_length=255, unique=True)
     text = models.TextField(verbose_name='содержимое', **NULLABLE)
     image = models.ImageField(upload_to='blog_image/', verbose_name='изображение', **NULLABLE)
     date_create = models.DateField(verbose_name='дата создания', auto_now_add=True, **NULLABLE)
