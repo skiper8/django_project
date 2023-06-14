@@ -1,30 +1,43 @@
-{% extends 'catalog/base.html'%}
+{% extends 'catalog/base.html' %}
 {% load mediapath %}
 {% block content %}
-{% include 'catalog/includes/inc.catalog.title.html' %}
-{% for object in products_list %}
-<div class="col-md-4">
-    <div class="card mb-4 box-shadow">
-        <img src="{{ object.product_image|mediapath }}"
-             alt=""
-             width="300"
-             height="200">
-        <div class="card-body">
-            <p class="card-text">{{ object }}</p>
-            <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                    <p class="card-text">{{ object.product_text }}</p>
+    {% include 'catalog/includes/inc.catalog.title.html' %}
+    {% for object in products_list %}
+        <div class="col-md-4">
+            <div class="card mb-4 box-shadow">
+                <img src="{{ object.product_image|mediapath }}"
+                     alt=""
+                     width="300"
+                     height="200">
+                <div class="card-body">
+                    <p class="card-text">{{ object }}</p>
+                    {% for version in object.version_set.all %}
+                    {% if version.is_active %}
+                        <small class="text-muted">Версия: {{version.version}} ({{ version.version_name }})</small><br>
+                    {% endif %}
+                {% endfor %}
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            <p class="card-text">{{ object.product_text }}</p>
+                        </div>
+                        <small class="text-muted">9 mins</small>
+                    </div>
                 </div>
-                <small class="text-muted">9 mins</small>
+                <p>
+                <nav class="ms-5">
+                    <a class="p-2 btn btn-success" href="{% url 'catalog:products_detail' object.pk %}">О
+                        товаре</a>
+                    <a class="p-2 btn btn-warning"
+                       href="{% url 'catalog:products_update' object.pk %}">Изменить</a>
+                    <a class="p-2 btn btn-danger"
+                       href="{% url 'catalog:products_delete' object.pk %}">Удалить</a>
+                </nav>
+                </p>
             </div>
         </div>
-        <body>
-        <nav class="ms-5">
-            <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:products_detail' object.pk %}">О товаре</a>
-        </nav>
-        </p>
-        </body>
+    {% endfor %}
+    <div>
+        <p><a class="btn btn-secondary" href="{% url 'catalog:products_form' %}" role="button">Создать продукт
+            &raquo;</a></p>
     </div>
-</div>
-{% endfor %}
 {% endblock %}

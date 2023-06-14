@@ -4,7 +4,6 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.utils.text import slugify
 
-
 NULLABLE = {'blank': True, 'null': True}
 
 
@@ -37,6 +36,21 @@ class Products(models.Model):
         verbose_name = 'товар'
         verbose_name_plural = 'товары'
         ordering = ('product_category',)
+
+
+class Version(models.Model):
+    product = models.ForeignKey(Products, verbose_name='продукт', on_delete=models.SET_NULL, null=True)
+    version = models.CharField(max_length=50, verbose_name='номер версии')
+    version_name = models.CharField(max_length=150, verbose_name='название версии')
+    is_active = models.BooleanField(default=True, verbose_name='активация')
+
+    def __str__(self):
+        return f'{self.version_name} {self.version}'
+
+    class Meta:
+        verbose_name = 'версия'
+        verbose_name_plural = 'версии'
+        ordering = ('version',)
 
 
 class Contacts(models.Model):
