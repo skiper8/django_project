@@ -49,18 +49,23 @@ class ProductsCreateView(generic.CreateView):
 class ProductsUpdateView(generic.UpdateView):
     model = Products
     form_class = ProductsForms
-
-    def get_success_url(self):
-        return reverse('catalog:products_list')
+    success_url = reverse_lazy('catalog:products_list')
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
-        VersionFormset = inlineformset_factory(Products, Version, form=VersionForms, extra=1)
-        if self.request.method == 'POST':
-            context_data['formset'] = VersionFormset(self.request.POST, instance=self.object)
-        else:
-            context_data['formset'] = VersionFormset(instance=self.object)
+        context_data['formset'] = self._get_formset()
         return context_data
+
+    def _get_formset(self):
+        VersionFormset = inlineformset_factory(
+            self.model, Version, form=VersionForms, extra=1
+        )
+        if self.request.method == 'POST':
+            return VersionFormset(
+                self.request.POST, instance=self.object
+            )
+        else:
+            return VersionFormset(instance=self.object)
 
     def form_valid(self, form):
         context_data = self.get_context_data()
