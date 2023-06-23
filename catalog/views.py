@@ -3,7 +3,7 @@ from django.urls import reverse_lazy, reverse
 from django.views import generic
 
 from catalog.models import Products, Contacts, Blog, Version
-from forms import ProductsForms, VersionForms
+from catalog.forms import ProductsForms, VersionForms
 
 
 class ProductsListView(generic.ListView):

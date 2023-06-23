@@ -9,12 +9,23 @@
                 <div class="col-sm-4 offset-md-1 py-4">
                     <ul class="list-unstyled">
                     </ul>
+                    {% if user.is_authenticated %}
                     <nav class="ms-5">
-                        <a class="p-2 btn btn-outline-primary" href="{% url 'users:login' %}">Войти</a>
+                        <a class="p-2 btn btn-outline-primary" href="{% url 'users:logout' %}">Выйти</a>
+                        <a class="p-2 btn btn-outline-primary" href="{% url 'users:profile' %}">Профиль</a>
                         <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:products_list' %}">Каталог</a>
                         <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:contacts_list' %}">Контакты</a>
                         <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:blog_list' %}">Форум</a>
                     </nav>
+                    {% else %}
+                    <nav class="ms-5">
+                        <a class="p-2 btn btn-outline-primary" href="{% url 'users:login' %}">Войти</a>
+                        <a class="p-2 btn btn-outline-primary" href="{% url 'users:register' %}">Регистрация</a>
+                        <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:products_list' %}">Каталог</a>
+                        <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:contacts_list' %}">Контакты</a>
+                        <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:blog_list' %}">Форум</a>
+                    </nav>
+                    {% endif %}
                 </div>
             </div>
         </div>
