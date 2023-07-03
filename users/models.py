@@ -14,11 +14,7 @@ class User(AbstractUser):
     phone = models.CharField(max_length=35, verbose_name='телефон', **NULLABLE)
     country = models.CharField(max_length=150, verbose_name='страна', **NULLABLE)
     is_active = models.BooleanField(default=False)
-    code = models.CharField(verbose_name='код', max_length=255, unique=True, **NULLABLE)
-
-    def save(self, *args, **kwargs):
-        self.code = str(random.randint(10000, 99999))
-        super(User, self).save(*args, **kwargs)
+    token = models.CharField(max_length=200, verbose_name='токен', **NULLABLE)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

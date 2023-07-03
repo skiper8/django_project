@@ -1,65 +1,100 @@
-from django.contrib.auth import authenticate
-from django.shortcuts import render, redirect
+from django.contrib.auth.tokens import default_token_generator
 
+from django.core.mail import send_mail
+from django.shortcuts import redirect
+
+from users.models import User
 from django.urls import reverse_lazy
 
-from django.views import generic
+from django.views import View
+from django.views.generic import UpdateView, CreateView, TemplateView
+from django.conf import settings
 
-from users.forms import UserForm, UserRegisterForm
-from users.models import User
-from utils import send_activate_email
-
-
-class UserUpdateView(generic.UpdateView):
-    model = User
-    form_class = UserForm
-    success_url = reverse_lazy('catalog:products_list')
-
-    def get_object(self, queryset=None):
-        return self.request.user
+from users.forms import UserRegisterForm, UserProfileForm
 
 
-class RegisterView(generic.CreateView):
+class UserRegisterView(CreateView):
+    """Класс региcтрации пользователя"""
     model = User
     form_class = UserRegisterForm
-    success_url = reverse_lazy('users:confirm_email')
+    template_name = 'users/register.html'
+    success_url = reverse_lazy('users:login')
+    success_message = 'Вы успешно зарегистрировались. Проверьте почту для активации!'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Регистрация на сайте'
+        return context
+
+    def form_valid(self, form):
+        user = form.save(commit=False)
+        user.is_active = False
+        user.token = default_token_generator.make_token(user)
+        activation_url = reverse_lazy(
+            'users:confirm_email', kwargs={'token': user.token}
+        )
+
+        send_mail(
+            subject='Подтверждение почты',
+            message=f'Для подтверждения регистрации перейдите по ссылке: http://localhost:8000/{activation_url}',
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[user.email],
+            fail_silently=False
+        )
+        user.save()
+        return redirect('users:email_confirmation_sent')
+
+
+class UserConfirmEmailView(View):
+    def get(self, request, token):
+        try:
+            user = User.objects.get(token=token)
+        except User.DoesNotExist:
+            return redirect('users:email_confirmation_failed')
+
+        user.is_active = True
+        user.token = None
+        user.save()
+        return redirect('users:login')
+
+
+class EmailConfirmationSentView(TemplateView):
+    template_name = 'users/email_confirmation_sent.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Письмо активации отправлено'
+        return context
+
+
+class EmailConfirmView(TemplateView):
+    template_name = 'users/email_verified.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Ваш электронный адрес активирован'
+        return context
+
+
+class EmailConfirmationFailedView(TemplateView):
+    template_name = 'users/email_confirmation_failed.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Ваш электронный адрес не активирован'
+        return context
+
+
+class UserUpdateView(UpdateView):
+    model = User
+    form_class = UserProfileForm
+    success_url = reverse_lazy('users:profile')
     template_name = 'users/user_form.html'
 
     def get_object(self, queryset=None):
         return self.request.user
 
-    def post(self, request, *args, **kwargs):
-        form = UserRegisterForm(request.POST)
-        new_user = form.save()
-
-        if form.is_valid():
-            form.save()
-            email = form.cleaned_data.get('email')
-            password = form.cleaned_data.get('password')
-            user = authenticate(email=email, password=password)
-            send_activate_email(new_user)
-            return redirect('users:confirm_email')
-        context_data = {
-            'form': form
-        }
-        return render(request, self.template_name, context_data)
-
-
-class EmailActivate(generic.UpdateView):
-    model = User
-    form_class = UserRegisterForm
-    success_url = reverse_lazy('catalog:products_list')
-
-    def verify(self, request):
-        if request.method == 'POST':
-            form = UserRegisterForm(request.POST)
-            if form.is_valid():
-                code = form.cleaned_data.get("code")
-                user = User.objects.get(code=code)
-                user.is_active = True
-                user.save()
-                object = super().get_object()
-                object.is_active = True
-                object.save()
-        else:
-            form = UserRegisterForm()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = f'Страница пользователя: {self.object.email}'
+        return context

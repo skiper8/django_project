@@ -23,6 +23,4 @@ urlpatterns = [
                   path('admin/', admin.site.urls),
                   path('', include('catalog.urls', namespace='catalog')),
                   path('users/', include('users.urls', namespace='users')),
-                  path('auth/', include('djoser.urls')),
-                  path('auth/', include('djoser.urls.jwt')),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

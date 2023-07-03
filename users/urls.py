@@ -1,17 +1,19 @@
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
-from django.views.generic import TemplateView
 
 from catalog.apps import UsersConfig
-from users.views import UserUpdateView, RegisterView, EmailActivate
+from users.views import UserUpdateView, UserRegisterView, EmailConfirmationSentView, UserConfirmEmailView, \
+    EmailConfirmView, EmailConfirmationFailedView
 
 app_name = UsersConfig.name
 
 urlpatterns = [
-    path('', LoginView.as_view(template_name='users/login.html'), name='login'),
-    path('logout/', LogoutView.as_view(), name='logout'),
-    path('profile/', UserUpdateView.as_view(), name='profile'),
-    path('register/', RegisterView.as_view(), name='register'),
-    path('confirm_email/', TemplateView.as_view(template_name='users/confirm_email.html'), name='confirm_email'),
-    path('activate_email/<uidb64>/<token>/', EmailActivate.as_view(), name='activate_email'),
+    path('', LoginView.as_view(template_name='users/login.html'), name='login'), # войти
+    path('logout/', LogoutView.as_view(), name='logout'), # выйти
+    path('register/', UserRegisterView.as_view(), name='register'), # регистрация
+    path('profile/', UserUpdateView.as_view(), name='profile'), # профиль
+    path('email_confirmation_sent/', EmailConfirmationSentView.as_view(), name='email_confirmation_sent'),
+    path('confirm_email/<str:token>/', UserConfirmEmailView.as_view(), name='confirm_email'),
+    path('email_confirmed/', EmailConfirmView.as_view(), name='email_verified'),
+    path('confirm_email_failed/', EmailConfirmationFailedView.as_view(), name='email_confirmation_failed'),
 ]
