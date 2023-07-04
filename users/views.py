@@ -108,7 +108,7 @@ class UserForgotPasswordView(SuccessMessageMixin, PasswordResetView):
     """
     form_class = UserForgotPasswordForm
     template_name = 'users/user_password_reset.html'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('users:password_reset_sent')
     success_message = 'Письмо с инструкцией по восстановлению пароля отправлена на ваш email'
     subject_template_name = 'users/email/password_subject_reset_mail.txt'
     email_template_name = 'users/email/password_reset_mail.html'
@@ -125,10 +125,28 @@ class UserPasswordResetConfirmView(SuccessMessageMixin, PasswordResetConfirmView
     """
     form_class = UserSetNewPasswordForm
     template_name = 'users/user_password_set_new.html'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('users:password_success_sent')
     success_message = 'Пароль успешно изменен. Можете авторизоваться на сайте.'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Установить новый пароль'
+        return context
+
+
+class PasswordResetSentView(TemplateView):
+    template_name = 'users/password_reset_sent.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Письмо активации отправлено'
+        return context
+
+
+class PasswordSuccessSentView(TemplateView):
+    template_name = 'users/password_success_sent.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Вы сменили пароль'
         return context

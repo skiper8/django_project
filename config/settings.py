@@ -31,17 +31,17 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
-
-    'djoser',
 
     'catalog',
     'users',
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -150,6 +150,7 @@ EMAIL_HOST_USER = 'djan.test@yandex.ru'
 EMAIL_HOST_PASSWORD = 'qskpeutfwkfmxisg'
 EMAIL_USE_SSL = True
 # qskpeutfwkfmxisg
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 AUTH_USER_MODEL = 'users.User'
 LOGIN_REDIRECT_URL = '/'

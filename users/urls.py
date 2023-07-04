@@ -3,7 +3,8 @@ from django.urls import path
 
 from catalog.apps import UsersConfig
 from users.views import UserUpdateView, UserRegisterView, EmailConfirmationSentView, UserConfirmEmailView, \
-    EmailConfirmView, EmailConfirmationFailedView, UserForgotPasswordView, UserPasswordResetConfirmView
+    EmailConfirmView, EmailConfirmationFailedView, UserForgotPasswordView, UserPasswordResetConfirmView, \
+    PasswordResetSentView, PasswordSuccessSentView
 
 app_name = UsersConfig.name
 
@@ -18,4 +19,6 @@ urlpatterns = [
     path('confirm_email_failed/', EmailConfirmationFailedView.as_view(), name='email_confirmation_failed'),
     path('password-reset/', UserForgotPasswordView.as_view(), name='password_reset'),
     path('set-new-password/<uidb64>/<token>/', UserPasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('password_reset_sent/', PasswordResetSentView.as_view(), name='password_reset_sent'),
+    path('password_success_sent/', PasswordSuccessSentView.as_view(), name='password_success_sent'),
 ]
