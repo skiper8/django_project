@@ -9,10 +9,12 @@
                     <input type="submit" class="btn btn-success"
                            value="Войти">
                 </form>
+                <a href="{% url 'users:user_password_reset' %}" role="button">Забыли пароль?
+                    </a>
             </div>
             <div class="card-footer">
                 <a href="{% url 'catalog:products_list' %}" role="button">Назад
-                    &raquo;</a>
+                    </a>
             </div>
         </div>
     </div>
