@@ -4,6 +4,8 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.utils.text import slugify
 
+from users.models import User
+
 NULLABLE = {'blank': True, 'null': True}
 
 
@@ -28,6 +30,7 @@ class Products(models.Model):
     product_price = models.IntegerField(verbose_name='цена')
     product_date_create = models.DateField(verbose_name='дата создания', auto_now_add=True, **NULLABLE)
     product_date_edit = models.DateField(verbose_name='дата последнего изменения', auto_now=True, **NULLABLE)
+    username = models.ForeignKey(User, verbose_name='автор', on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.product_name
